@@ -6,7 +6,7 @@
     "start": "ts-node src/server.ts",
     "build": "tsc",
     "serve": "node dist/server.js",
-    "dev": "npm run build && nodemon --watch 'src/**/*.ts' --exec ts-node src/server.ts"
+    "dev": "nodemon --watch src --ext ts --exec ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -14,10 +14,13 @@
   "description": "",
   "dependencies": {
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "morgan": "^1.10.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.10.2",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",

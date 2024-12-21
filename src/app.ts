@@ -9,14 +9,23 @@ import UserRepository from "./data/repositories/user.repository";
 import UserController from "./presentation/user.controller";
 import UserRouter from "./routes/user.route";
 import { mainLogger } from "./config/logger";
-import { User } from "./data/models/association";
+import { Note, User } from "./data/models/association";
+import NoteRepository from "./data/repositories/note.repository";
+import NoteController from "./presentation/note.controller";
+import NoteRouter from "./routes/note.route";
 
 export const app: Application = express();
 
 // dependency injection
+//User
 const userRepo = new UserRepository(User);
 const userController = new UserController(userRepo);
 const userRouter = new UserRouter(userController);
+
+//Note
+const noteRepo = new NoteRepository(Note);
+const noteController = new NoteController(noteRepo);
+const noteRouter = new NoteRouter(noteController);
 
 // Middlewares
 app.use(express.json());
@@ -27,6 +36,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/users", userRouter.router);
+app.use("/notes", noteRouter.router);
 
 app.all("*", (req, res) => {
   console.log(`404 hit for path: ${req.path}`); // Add this log

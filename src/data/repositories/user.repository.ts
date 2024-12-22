@@ -1,29 +1,32 @@
 import { ModelStatic } from "sequelize";
-import { UserInstance } from "../../types/userAttributes";
-import { User, UserCreation } from "../../types/repos/userRepoTypes";
+import {
+  UserAttributes,
+  UserCreationAttributes,
+  UserInstance,
+} from "../../types/userAttributes";
 class UserRepository {
   constructor(private userModel: ModelStatic<UserInstance>) {
     this.userModel = userModel;
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(): Promise<UserAttributes[]> {
     return this.userModel.findAll({
       attributes: { exclude: ["password"] },
     });
   }
 
-  async getUserByUsername(username: string): Promise<User | null> {
+  async getUserByUsername(username: string): Promise<UserAttributes | null> {
     return this.userModel.findOne({
       where: {
         username,
       },
     });
   }
-  async getUserById(id: string): Promise<User | null> {
+  async getUserById(id: string): Promise<UserAttributes | null> {
     return this.userModel.findByPk(parseInt(id));
   }
 
-  async createUser(userData: UserCreation): Promise<User> {
+  async createUser(userData: UserCreationAttributes): Promise<UserAttributes> {
     return this.userModel.create(userData);
   }
 

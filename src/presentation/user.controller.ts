@@ -31,8 +31,8 @@ class UserController {
 
   disactivateUser = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const [affectedCount] = await this.userService.disActivateUser(id);
-    if (affectedCount === 0) {
+    const [affectedCounts] = await this.userService.disActivateUser(id);
+    if (affectedCounts === 0) {
       res.status(400).json({
         message: "no resource has updated",
       });

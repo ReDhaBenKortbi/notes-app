@@ -1,5 +1,9 @@
 import UserRepository from "../data/repositories/user.repository";
-import { User, UserCreation } from "../types/repos/userRepoTypes";
+import UserController from "../presentation/user.controller";
+import {
+  UserAttributes,
+  UserCreationAttributes,
+} from "../types/userAttributes";
 import { isValidPassword } from "../utils/passwordChecker";
 import { isValidUsername } from "../utils/usernameChecker";
 
@@ -9,11 +13,11 @@ export class UserService {
     this.userRepo = userRepo;
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(): Promise<UserAttributes[]> {
     return this.userRepo.getAllUsers();
   }
 
-  async createUser(userData: UserCreation): Promise<User> {
+  async createUser(userData: UserCreationAttributes): Promise<UserAttributes> {
     const user = await this.userRepo.getUserByUsername(userData.username);
     if (user) {
       throw new Error("User already exists");

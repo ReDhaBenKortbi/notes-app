@@ -8,7 +8,7 @@ export interface UserAttributes {
   isActive: boolean;
 }
 
-interface UserCreationAttributes
+export interface UserCreationAttributes
   extends Optional<UserAttributes, "id" | "roles" | "isActive"> {}
 
 export interface UserInstance

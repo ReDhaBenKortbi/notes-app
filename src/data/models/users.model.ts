@@ -12,8 +12,9 @@ export const userOptions = {
     allowNull: false,
   },
   roles: {
-    type: DataTypes.ENUM("employee", "manager", "admin"),
-    defaultValue: "employee",
+    type: DataTypes.JSON,
+    defaultValue: ["employee"], // Default as an array with one role
+    allowNull: false,
   },
   isActive: {
     type: DataTypes.BOOLEAN,

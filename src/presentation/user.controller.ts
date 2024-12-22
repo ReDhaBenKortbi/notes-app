@@ -1,26 +1,29 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+import UserRepository from "../data/repositories/user.repository";
+import { UserCreation } from "../types/repos/userRepoTypes";
+import { UserService } from "../application/user.service";
 
 class UserController {
-  private userRepo;
-  constructor(userRepo: any) {
-    this.userRepo = userRepo;
+  private userService;
+  constructor(userRepo: UserService) {
+    this.userService = userRepo;
   }
 
   getAllUsers = asyncHandler(async (req: Request, res: Response) => {
-    const allUsers = await this.userRepo.getAllUsers();
+    const allUsers = await this.userService.getAllUsers();
     res.status(200).json({ users: allUsers });
   });
 
   createUser = asyncHandler(async (req: Request, res: Response) => {
     const userData = req.body;
-    const newUser = await this.userRepo.createUser(userData);
+    const newUser = await this.userService.createUser(userData);
     res.status(201).json({
       message: "new user created successfully",
       new_user: {
         id: newUser.id,
         username: newUser.username,
-        role: newUser.roles,
+        roles: newUser.roles,
         isActive: newUser.isActive,
       },
     });
@@ -28,7 +31,12 @@ class UserController {
 
   disactivateUser = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    await this.userRepo.disactivateUser(id);
+    const [affectedCount] = await this.userService.disActivateUser(id);
+    if (affectedCount === 0) {
+      res.status(400).json({
+        message: "no resource has updated",
+      });
+    }
     res.status(200).json({
       message: "user has been disactivated",
     });
@@ -36,7 +44,12 @@ class UserController {
 
   deleteUser = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    await this.userRepo.deleteUser(id);
+    const deletedRows = await this.userService.deleteUser(id);
+    if (deletedRows === 0) {
+      res.status(400).json({
+        message: "no resource has deleted",
+      });
+    }
     res.status(200).json({
       message: "user was deleted successfully",
     });

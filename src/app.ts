@@ -13,13 +13,15 @@ import { Note, User } from "./data/models/association";
 import NoteRepository from "./data/repositories/note.repository";
 import NoteController from "./presentation/note.controller";
 import NoteRouter from "./routes/note.route";
+import { UserService } from "./application/user.service";
 
 export const app: Application = express();
 
 // dependency injection
 //User
 const userRepo = new UserRepository(User);
-const userController = new UserController(userRepo);
+const userService = new UserService(userRepo);
+const userController = new UserController(userService);
 const userRouter = new UserRouter(userController);
 
 //Note

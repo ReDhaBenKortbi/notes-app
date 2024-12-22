@@ -15,6 +15,8 @@ import NoteController from "./presentation/note.controller";
 import NoteRouter from "./routes/note.route";
 import { UserService } from "./application/user.service";
 import { NoteService } from "./application/note.service";
+import AuthRouter from "./routes/auth.route";
+import AuthController from "./presentation/auth.controller";
 
 export const app: Application = express();
 
@@ -31,16 +33,21 @@ const noteService = new NoteService(noteRepo);
 const noteController = new NoteController(noteService);
 const noteRouter = new NoteRouter(noteController);
 
+//Auth
+const authController = new AuthController(userRepo);
+const authRouter = new AuthRouter(authController);
+
 // Middlewares
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(morganMiddleware);
 app.use(cors(corsOptions));
-app.use(cookieParser());
 
 // Routes
 app.use("/users", userRouter.router);
 app.use("/notes", noteRouter.router);
+app.use("/auth", authRouter.router);
 
 app.all("*", (req, res) => {
   console.log(`404 hit for path: ${req.path}`); // Add this log

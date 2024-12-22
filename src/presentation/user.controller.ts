@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import UserRepository from "../data/repositories/user.repository";
-import { UserCreation } from "../types/repos/userRepoTypes";
 import { UserService } from "../application/user.service";
 
 class UserController {

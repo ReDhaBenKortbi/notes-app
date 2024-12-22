@@ -14,6 +14,7 @@ import NoteRepository from "./data/repositories/note.repository";
 import NoteController from "./presentation/note.controller";
 import NoteRouter from "./routes/note.route";
 import { UserService } from "./application/user.service";
+import { NoteService } from "./application/note.service";
 
 export const app: Application = express();
 
@@ -26,7 +27,8 @@ const userRouter = new UserRouter(userController);
 
 //Note
 const noteRepo = new NoteRepository(Note);
-const noteController = new NoteController(noteRepo);
+const noteService = new NoteService(noteRepo);
+const noteController = new NoteController(noteService);
 const noteRouter = new NoteRouter(noteController);
 
 // Middlewares

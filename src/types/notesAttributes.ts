@@ -1,13 +1,15 @@
 import { Model, Optional } from "sequelize";
 
-interface NoteAttributes {
+export interface NoteAttributes {
+  id: string;
   title: string;
   text: string;
   isCompleted: boolean;
   userId: string;
 }
 
-interface NoteCreationAttributes extends Optional<NoteAttributes, "userId"> {}
+export interface NoteCreationAttributes
+  extends Optional<NoteAttributes, "id" | "isCompleted"> {}
 
 export interface NoteInstance
   extends Model<NoteAttributes, NoteCreationAttributes>,

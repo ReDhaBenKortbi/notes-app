@@ -3,6 +3,7 @@ import UserRepository from "../data/repositories/user.repository";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { generateToken } from "../utils/generateToken";
 
 class AuthController {
   private userRepo;
@@ -40,23 +41,15 @@ class AuthController {
           message: "username or password is wrong",
         });
       } else {
-        const accessToken = jwt.sign(
-          {
-            userInfo: {
-              username: user.username,
-              roles: user.roles,
-            },
-          },
-          process.env.ACCESS_TOKEN_SECRET || "defaultSecret",
-          { expiresIn: "10s" }
-        );
-        const refreshToken = jwt.sign(
-          {
+        const accessToken = generateToken("access", {
+          userInfo: {
             username: user.username,
+            roles: user.roles,
           },
-          process.env.REFRESH_TOKEN_SECRET || "defaultSecret",
-          { expiresIn: "1d" }
-        );
+        });
+        const refreshToken = generateToken("refresh", {
+          username: user.username,
+        });
 
         res
           .cookie("jwt", refreshToken, {
@@ -102,16 +95,12 @@ class AuthController {
         return;
       }
 
-      const accessToken = jwt.sign(
-        {
-          userInfo: {
-            username: user.username,
-            roles: user.roles,
-          },
+      const accessToken = generateToken("access", {
+        userInfo: {
+          username: user.username,
+          roles: user.roles,
         },
-        process.env.ACCESS_TOKEN_SECRET || "defaultSecret",
-        { expiresIn: "10s" }
-      );
+      });
 
       res.json({ accessToken });
     } catch (error) {

@@ -1,11 +1,12 @@
 import { Router } from "express";
 import UserController from "../presentation/user.controller";
-
+import { verifyJwt } from "../middleware/verifyJwt";
 class UserRouter {
   public router: Router;
 
   constructor(private userController: UserController) {
     this.router = Router();
+    this.router.use(verifyJwt);
     this.initRoutes();
   }
 

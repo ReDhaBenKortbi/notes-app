@@ -1,11 +1,13 @@
 import { Router } from "express";
 import NoteController from "../presentation/note.controller";
+import { verifyJwt } from "../middleware/verifyJwt";
 
 class NoteRouter {
   public router: Router;
 
   constructor(private noteController: NoteController) {
     this.router = Router();
+    this.router.use(verifyJwt);
     this.initRoutes();
   }
 

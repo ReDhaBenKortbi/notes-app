@@ -17,7 +17,10 @@ export const verifyJwt = (
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || "", (err, decoded) => {
     if (err) {
-      return res.status(403).send("Forbidden");
+      return res.status(403).json({
+        status: 403,
+        message: "Token is invalid or expired",
+      });
     }
 
     // Safely add properties to the request object

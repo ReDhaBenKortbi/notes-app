@@ -6,18 +6,22 @@ class UserRouter {
 
   constructor(private userController: UserController) {
     this.router = Router();
-    this.router.use(verifyJwt);
     this.initRoutes();
   }
 
   private initRoutes() {
-    this.router.get("/all-users", this.userController.getAllUsers);
+    this.router.get("/all-users", verifyJwt, this.userController.getAllUsers);
     this.router.post("/create-user", this.userController.createUser);
     this.router.put(
       "/disactivate-user/:id",
+      verifyJwt,
       this.userController.disactivateUser
     );
-    this.router.delete("/delete-user/:id", this.userController.deleteUser);
+    this.router.delete(
+      "/delete-user/:id",
+      verifyJwt,
+      this.userController.deleteUser
+    );
   }
 }
 

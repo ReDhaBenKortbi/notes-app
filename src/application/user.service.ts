@@ -1,5 +1,4 @@
 import UserRepository from "../data/repositories/user.repository";
-import UserController from "../presentation/user.controller";
 import {
   UserAttributes,
   UserCreationAttributes,
@@ -24,6 +23,9 @@ export class UserService {
     }
     if (!isValidUsername(userData.username)) {
       throw new Error("Invalid username");
+    }
+    if (userData.password !== userData.confirmPassword) {
+      throw new Error("Password does not match");
     }
     if (!isValidPassword(userData.password)) {
       throw new Error("Password is weak");

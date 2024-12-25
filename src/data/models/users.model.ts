@@ -11,9 +11,9 @@ export const userOptions = {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  roles: {
-    type: DataTypes.JSON,
-    defaultValue: ["employee"], // Default as an array with one role
+  role: {
+    type: DataTypes.STRING,
+    default: "employee",
     allowNull: false,
   },
   isActive: {

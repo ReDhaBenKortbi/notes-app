@@ -21,7 +21,7 @@ class UserController {
       new_user: {
         id: newUser.id,
         username: newUser.username,
-        roles: newUser.roles,
+        role: newUser.role,
         isActive: newUser.isActive,
       },
     });

@@ -5,12 +5,12 @@ export interface UserAttributes {
   username: string;
   password: string;
   confirmPassword: string;
-  roles: Array<"employee" | "manager" | "admin">;
+  role: "employee" | "manager" | "admin";
   isActive: boolean;
 }
 
 export interface UserCreationAttributes
-  extends Optional<UserAttributes, "id" | "roles" | "isActive" | "roles"> {}
+  extends Optional<UserAttributes, "id" | "isActive" | "role"> {}
 
 export interface UserInstance
   extends Model<UserAttributes, UserCreationAttributes>,

@@ -45,7 +45,7 @@ class AuthController {
       const accessToken = generateToken("access", {
         userInfo: {
           username: user.username,
-          roles: user.roles,
+          role: user.role,
         },
       });
       const refreshToken = generateToken("refresh", {
@@ -89,7 +89,7 @@ class AuthController {
       const accessToken = generateToken("access", {
         userInfo: {
           username: user.username,
-          roles: user.roles,
+          role: user.role,
         },
       });
 

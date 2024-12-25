@@ -6,7 +6,7 @@ export function generateToken(type: "access" | "refresh", payload: object) {
       ? process.env.ACCESS_TOKEN_SECRET
       : process.env.REFRESH_TOKEN_SECRET;
 
-  const duration = type === "access" ? "10s" : "1d";
+  const duration = type === "access" ? "15m" : "7d";
 
   return jwt.sign(payload, secret || "", {
     expiresIn: duration,

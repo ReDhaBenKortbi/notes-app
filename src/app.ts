@@ -1,22 +1,22 @@
 import express, { Application, urlencoded } from "express";
 import "dotenv/config";
-import { morganMiddleware } from "./middleware/morgan.middleware";
-import { errorMiddleware } from "./middleware/error.middleware";
+import { morganMiddleware } from "./middleware/morgan.middleware.js";
+import { errorMiddleware } from "./middleware/error.middleware.js";
 import cors from "cors";
-import { corsOptions } from "./config/cors";
+import { corsOptions } from "./config/cors.js";
 import cookieParser from "cookie-parser";
-import UserRepository from "./data/repositories/user.repository";
-import UserController from "./presentation/user.controller";
-import UserRouter from "./routes/user.route";
-import { mainLogger } from "./config/logger";
-import { Note, User } from "./data/models/association";
-import NoteRepository from "./data/repositories/note.repository";
-import NoteController from "./presentation/note.controller";
-import NoteRouter from "./routes/note.route";
-import { UserService } from "./application/user.service";
-import { NoteService } from "./application/note.service";
-import AuthRouter from "./routes/auth.route";
-import AuthController from "./presentation/auth.controller";
+import UserRepository from "./data/repositories/user.repository.js";
+import UserController from "./presentation/user.controller.js";
+import UserRouter from "./routes/user.route.js";
+import { mainLogger } from "./config/logger.js";
+import { Note, User } from "./data/models/association.js";
+import NoteRepository from "./data/repositories/note.repository.js";
+import NoteController from "./presentation/note.controller.js";
+import NoteRouter from "./routes/note.route.js";
+import { UserService } from "./application/user.service.js";
+import { NoteService } from "./application/note.service.js";
+import AuthRouter from "./routes/auth.route.js";
+import AuthController from "./presentation/auth.controller.js";
 
 export const app: Application = express();
 

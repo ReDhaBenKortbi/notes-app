@@ -1,8 +1,8 @@
 import { Application } from "express";
-import { app } from "./app";
-import { testConnection } from "./config/dbService";
-import { associateModels } from "./data/models/association";
-import { mainLogger } from "./config/logger";
+import { app } from "./app.js";
+import { testConnection } from "./config/dbService.js";
+import { associateModels } from "./data/models/association.js";
+import { mainLogger } from "./config/logger.js";
 
 const port = process.env.PORT || "3000";
 

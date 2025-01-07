@@ -6,7 +6,7 @@ const { combine, timestamp, json, errors, colorize, printf, align } =
   winston.format;
 
 // Construct the path to the logs folder
-const logsDir = path.resolve(__dirname, "../../logs");
+const logsDir = path.resolve(import.meta.dirname, "../../logs");
 
 // Ensure the logs directory exists
 if (!fs.existsSync(logsDir)) {
@@ -46,7 +46,7 @@ export const mainLogger = winston.loggers.add("mainLogger", {
       format: combine(
         colorize({ all: true }),
         timestamp({
-          format: "YYYY-MM-DD hh:mm:ss.SSS A",
+          format: "YYYY-MM-DD hh:mm:ss A",
         }),
         align(),
         printf((info) => `[${info.timestamp}] ${info.level}: ${info.message}`)
@@ -59,12 +59,11 @@ export const httpLogger = winston.loggers.add("httpLogger", {
   level: "http",
   format: combine(
     timestamp({
-      format: "YYYY-MM-DD hh:mm:ss.SSS A",
+      format: "YYYY-MM-DD hh:mm:ss A",
     }),
     json()
   ),
   transports: [
-    new winston.transports.Console(),
     new winston.transports.File({
       filename: path.join(logsDir, "app-http.log"),
       level: "http",

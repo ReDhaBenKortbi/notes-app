@@ -1,10 +1,10 @@
 import { ModelStatic } from "sequelize";
-import { sqlInstance } from "../../config/db";
-import { mainLogger } from "../../config/logger";
-import { noteOptions, notesMetaOptions } from "./notes.model";
-import { userOptions, userMetaOptions } from "./users.model";
-import { UserInstance } from "../../types/userAttributes";
-import { NoteInstance } from "../../types/notesAttributes";
+import { sqlInstance } from "../../config/db.js";
+import { mainLogger } from "../../config/logger.js";
+import { noteOptions, notesMetaOptions } from "./notes.model.js";
+import { userOptions, userMetaOptions } from "./users.model.js";
+import { UserInstance } from "../../types/userAttributes.js";
+import { NoteInstance } from "../../types/notesAttributes.js";
 
 export const User: ModelStatic<UserInstance> = sqlInstance.define(
   "user",
@@ -24,7 +24,7 @@ export async function associateModels() {
     Note.belongsTo(User);
 
     // Synchronize the models
-    await sqlInstance.sync({ alter: true });
+    await sqlInstance.sync();
     mainLogger.info("Database synchronization completed successfully.");
   } catch (error) {
     mainLogger.error("Database synchronization failed", error);

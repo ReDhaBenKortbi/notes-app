@@ -1,20 +1,41 @@
-import { ModelStatic } from "sequelize";
+import { ModelStatic, Op, where } from "sequelize";
 import {
   UserAttributes,
   UserCreationAttributes,
   UserInstance,
-} from "../../types/userAttributes";
+} from "../../types/userAttributes.js";
+
+interface queryOptions {
+  offset: number | undefined;
+  limit: number | undefined;
+  order: string;
+  where:
+    | undefined
+    | {
+        username: string;
+      };
+}
 class UserRepository {
   constructor(private userModel: ModelStatic<UserInstance>) {
     this.userModel = userModel;
   }
 
-  async getAllUsers(): Promise<UserAttributes[]> {
-    return this.userModel.findAll({
-      attributes: { exclude: ["password"] },
-    });
+  async countAllUsers() {
+    return this.userModel.count();
   }
 
+  async getAllUsers(queryOptions: any): Promise<{
+    count: number;
+    rows: UserAttributes[];
+  }> {
+    return this.userModel.findAndCountAll({
+      attributes: { exclude: ["password"] },
+      offset: queryOptions.offset,
+      limit: queryOptions.limit,
+      order: queryOptions.order,
+      where: queryOptions.where,
+    });
+  }
   async getUserByUsername(username: string): Promise<UserAttributes | null> {
     return this.userModel.findOne({
       where: {
@@ -25,14 +46,15 @@ class UserRepository {
   async getUserById(id: string): Promise<UserAttributes | null> {
     return this.userModel.findByPk(parseInt(id));
   }
-
   async createUser(userData: UserCreationAttributes): Promise<UserAttributes> {
     return this.userModel.create(userData);
   }
-
-  async disactivateUser(id: string): Promise<[affectedCount: number]> {
+  async updateUserStatus(
+    id: string,
+    value: boolean
+  ): Promise<[affectedCount: number]> {
     return await this.userModel.update(
-      { isActive: false },
+      { isActive: value },
       {
         where: {
           id,
@@ -40,7 +62,19 @@ class UserRepository {
       }
     );
   }
-
+  async updateUserRole(
+    id: string,
+    role: "employee" | "manager"
+  ): Promise<[affectedCount: number]> {
+    return await this.userModel.update(
+      { role },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+  }
   async deleteUser(id: string): Promise<number> {
     return this.userModel.destroy({
       where: {

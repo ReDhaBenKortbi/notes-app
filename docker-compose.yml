@@ -13,12 +13,16 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_HOST: ${MYSQL_HOST}
-    env_file:
-      - .env
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
     ports:
-      - "3001:3001"
+      - "${PORT}:${PORT}"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
 
   db:
     image: mysql:latest
@@ -30,6 +34,28 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./mysql-config:/etc/mysql/conf.d
+    networks:
+      - app-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
 volumes:
   db_data:
+
+networks:
+  app-network:
+    driver: bridge

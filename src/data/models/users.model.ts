@@ -13,7 +13,7 @@ export const userOptions = {
   },
   role: {
     type: DataTypes.STRING,
-    default: "employee",
+    defaultValue: "employee",
     allowNull: false,
   },
   isActive: {

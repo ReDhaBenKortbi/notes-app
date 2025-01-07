@@ -1,5 +1,5 @@
 import morgan from "morgan";
-import { httpLogger } from "../config/logger";
+import { httpLogger } from "../config/logger.js";
 
 export const morganMiddleware = morgan(
   function (tokens, req, res) {

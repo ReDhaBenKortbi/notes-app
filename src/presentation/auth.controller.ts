@@ -1,9 +1,9 @@
 import asyncHandler from "express-async-handler";
-import UserRepository from "../data/repositories/user.repository";
+import UserRepository from "../data/repositories/user.repository.js";
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { generateToken } from "../utils/generateToken";
+import { generateToken } from "../utils/generateToken.js";
 interface LoginData {
   username: string;
   password: string;
@@ -44,12 +44,13 @@ class AuthController {
 
       const accessToken = generateToken("access", {
         userInfo: {
+          id: user.id,
           username: user.username,
           role: user.role,
         },
       });
       const refreshToken = generateToken("refresh", {
-        username: user.username,
+        id: user.id,
       });
 
       res
@@ -57,7 +58,7 @@ class AuthController {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 day
         })
         .json({ accessToken });
     }
@@ -67,7 +68,7 @@ class AuthController {
     const cookies = req.cookies;
 
     if (!cookies?.jwt) {
-      res.status(401).json({ message: "No refresh token provided." });
+      res.status(401).json({ message: "Unauthorized" });
       return;
     }
 
@@ -77,9 +78,9 @@ class AuthController {
       const decoded = jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET || ""
-      ) as { username: string };
+      ) as { id: string };
 
-      const user = await this.userRepo.getUserByUsername(decoded.username);
+      const user = await this.userRepo.getUserById(decoded.id);
 
       if (!user) {
         res.status(404).json({ message: "User not found." });
@@ -88,6 +89,7 @@ class AuthController {
 
       const accessToken = generateToken("access", {
         userInfo: {
+          id: user.id,
           username: user.username,
           role: user.role,
         },

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { mainLogger } from "../config/logger";
+import { mainLogger } from "../config/logger.js";
 
 export const errorMiddleware = (
   err: { statusCode?: number; message?: string; stack?: string },
@@ -9,10 +9,11 @@ export const errorMiddleware = (
 ) => {
   const status: number = err.statusCode || 500;
   const message: string = err.message || "Something went wrong";
-  // Log the error details using mainLogger
+
+  // Log error details for debugging
   mainLogger.error({
-    message: err.message,
-    status: err.statusCode || 500,
+    message,
+    status,
     stack: err.stack,
     url: req.originalUrl,
     method: req.method,
@@ -21,6 +22,6 @@ export const errorMiddleware = (
   res.status(status).json({
     status,
     message,
-    stack: process.env.NODE_ENV === "development" ? err.stack : {}, // Send stack trace only in development
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }), // Include stack trace only in development
   });
 };

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import NoteController from "../presentation/note.controller";
-import { verifyJwt } from "../middleware/verifyJwt";
+import NoteController from "../presentation/note.controller.js";
+import { verifyJwt } from "../middleware/verifyJwt.js";
 
 class NoteRouter {
   public router: Router;
@@ -13,12 +13,14 @@ class NoteRouter {
 
   private initRoutes() {
     this.router.get("/all-notes", this.noteController.getAllNotes);
+    this.router.get("/:id", this.noteController.getNoteById);
     this.router.post("/create-note", this.noteController.createNote);
-    this.router.put(
+    this.router.post(
       "/mark-completed/:id",
       this.noteController.markNoteAsCompleted
     );
-    this.router.delete("/delete-note/:id", this.noteController.deleteNote);
+    this.router.post("/update-note/:id", this.noteController.updateNote);
+    this.router.post("/delete-note/:id", this.noteController.deleteNote);
   }
 }
 

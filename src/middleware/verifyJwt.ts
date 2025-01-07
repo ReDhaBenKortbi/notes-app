@@ -26,9 +26,7 @@ export const verifyJwt = (
     // Safely add properties to the request object
     if (decoded && typeof decoded === "object") {
       //@ts-ignore
-      req.user = decoded.userInfo?.username; // Type this in a global declaration if needed
-      //@ts-ignore
-      req.roles = decoded.userInfo?.roles;
+      req.user = decoded.userInfo; // Type this in a global declaration if needed
     }
     next();
   });

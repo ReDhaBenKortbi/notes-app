@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { limiter } from "../middleware/httpLimiter";
-import AuthController from "../presentation/auth.controller";
+import { limiter } from "../middleware/httpLimiter.js";
+import AuthController from "../presentation/auth.controller.js";
 
 class AuthRouter {
   public router: Router;

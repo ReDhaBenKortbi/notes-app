@@ -1,6 +1,7 @@
 import { Router } from "express";
-import UserController from "../presentation/user.controller";
-import { verifyJwt } from "../middleware/verifyJwt";
+import UserController from "../presentation/user.controller.js";
+import { verifyJwt } from "../middleware/verifyJwt.js";
+
 class UserRouter {
   public router: Router;
 
@@ -11,13 +12,23 @@ class UserRouter {
 
   private initRoutes() {
     this.router.get("/all-users", verifyJwt, this.userController.getAllUsers);
+    // this.router.get(
+    //   "/search",
+    //   verifyJwt,
+    //   this.userController.searchUsersByUsername
+    // );
     this.router.post("/create-user", this.userController.createUser);
-    this.router.put(
-      "/disactivate-user/:id",
+    this.router.post(
+      "/update-user-status/:id",
       verifyJwt,
-      this.userController.disactivateUser
+      this.userController.updateUserStatus
     );
-    this.router.delete(
+    this.router.post(
+      "/update-user-role/:id",
+      verifyJwt,
+      this.userController.updateUserRole
+    );
+    this.router.post(
       "/delete-user/:id",
       verifyJwt,
       this.userController.deleteUser
